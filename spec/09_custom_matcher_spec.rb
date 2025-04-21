@@ -40,10 +40,10 @@ describe 'one word palindrome test' do
   # using the following block: { |word| word.reverse == word }
   # When it is set up correctly, all of the following tests will pass.
   RSpec::Matchers.define :be_a_palindrome do
-    match { |word| word.reverse == word}
+    match { |word| word.reverse == word }
 
     failure_message do |actual|
-      "expected #{actual} to ba a palindrome" 
+      "expected #{actual} to ba a palindrome"
     end
 
     failure_message_when_negated do |actual|

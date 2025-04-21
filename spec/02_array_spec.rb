@@ -72,7 +72,7 @@ end
 describe Array do
   context 'when updating an implicit subject' do
     # remove the 'x' before running this test
-      # Write a test to expect the subject to be empty.
+    # Write a test to expect the subject to be empty.
     it { is_expected.to be_empty }
     # remove the 'x' before running this test
     it 'updates length to 1' do
