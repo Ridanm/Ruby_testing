@@ -13,7 +13,7 @@ class FindNumber
   end
 
   def make_guess
-    average = ((min + max) / 2).floor
+    ((min + max) / 2).floor
   end
 
   def game_over?
