@@ -171,10 +171,8 @@ describe BinaryGame do
   # context blocks.
 
   describe '#verify_input' do
-    
     # Located inside #player_input (Looping Script Method)
     # Query Method -> Test the return value
-
     # NOTE: #verify_input will only return a number if it is between?(min, max)
 
     subject(:binary_game) { described_class.new(0, 9) }
@@ -295,7 +293,10 @@ max}."
 
     # Write a test for the following context.
     context 'when game minimum and maximum is 100 and 600' do
-      xit 'returns 9' do
+      subject(:binary_game) { described_class.new(100, 600) }
+
+      it 'returns 9' do
+        expect(binary_game.maximum_guesses).to eq(9)
       end
     end
   end
@@ -324,28 +325,28 @@ max}."
     # This method is a Looping Script Method, because #display_turn_order will
     # loop until binary_search.game_over?
 
-    subject(:game_display) { described_class.new(1, 10) }
-    let(:search_display) { instance_double(BinarySearch) }
+    subject(:binary_game) { described_class.new(1, 10) }
+    let(:binary_search) { instance_double('BinarySearch') }
 
     context 'when game_over? is false once' do
       before do
-        allow(search_display).to receive(:game_over?).and_return(false, true)
+        allow(binary_search).to receive(:game_over?).and_return(false, true)
       end
 
       it 'calls display_turn_order one time' do
-        expect(game_display).to receive(:display_turn_order).with(search_display).once
-        game_display.display_binary_search(search_display)
+        expect(binary_game).to receive(:display_turn_order).with(binary_search).once
+        binary_game.display_binary_search(binary_search)
       end
     end
 
     context 'when game_over? is false twice' do
       before do
-        allow(search_display).to receive(:game_over?).and_return(false, false, true)
+        allow(binary_search).to receive(:game_over?).and_return(false, false, true)
       end
 
       it 'calls display_turn_order two times' do
-        expect(game_display).to receive(:display_turn_order).with(search_display).twice
-        game_display.display_binary_search(search_display)
+        expect(binary_game).to receive(:display_turn_order).with(binary_search).twice
+        binary_game.display_binary_search(binary_search)
       end
     end
 
@@ -353,7 +354,13 @@ max}."
 
     # Write a test for the following context.
     context 'when game_over? is false five times' do
-      xit 'calls display_turn_order five times' do
+      before do
+        allow(binary_search).to receive(:game_over?).and_return(false, false, false, false, false, true)
+      end
+
+      it 'calls display_turn_order five times' do
+        expect(binary_game).to receive(:display_turn_order).with(binary_search).exactly(5).times
+        binary_game.display_binary_search(binary_search)
       end
     end
   end
@@ -369,21 +376,31 @@ max}."
     #  by calling #display_guess.
 
     # Create a new subject and an instance_double for BinarySearch.
-
+    subject(:binary_game) { described_class.new(1, 10) }
+    let(:binary_search) { instance_double('BinarySearch', min: 1, max: 2, answer: 5, guess: 0) }
     before do
       # You'll need to create a few method stubs.
+      allow(binary_search).to receive(:make_guess)
+      allow(binary_search).to receive(:game_over?).and_return(false, true)
+      allow(binary_search).to receive(:update_range)
     end
 
     # Command Method -> Test the change in the observable state
-    xit 'increases guess_count by one' do
+    it 'increases guess_count by one' do
+      binary_game.display_turn_order(binary_search)
+      expect(binary_game.instance_variable_get(:@guess_count)).to eq(1)
     end
 
     # Method with Outgoing Command -> Test that a message is sent
-    xit 'sends make_guess' do
+    it 'sends make_guess' do
+      binary_game.display_turn_order(binary_search)
+      expect(binary_search).to have_received(:make_guess)
     end
 
     # Method with Outgoing Command -> Test that a message is sent
-    xit 'sends update_range' do
+    it 'sends update_range' do
+      binary_game.display_turn_order(binary_search)
+      expect(binary_search).to have_received(:update_range)
     end
 
     # Using method expectations can be confusing. Stubbing the methods above
