@@ -2,7 +2,7 @@
 
 RSpec.shared_examples 'pet' do
   context 'both classes' do
-    it 'reponf to talk' do
+    it 'respond to talk' do
       expect(subject).to respond_to(:talk)
     end
   end
